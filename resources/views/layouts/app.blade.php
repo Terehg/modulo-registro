@@ -15,12 +15,14 @@
     <!-- DataTables CSS -->
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css">
 
+
+
     <!-- Vite Assets -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
     <!-- Estilos personalizados -->
     <style>
-:root {
+        :root {
             --primary-color: #3498db;
             --secondary-color: #2c3e50;
             --success-color: #2ecc71;
@@ -53,10 +55,43 @@
             color: rgba(255, 255, 255, 0.8) !important;
             font-weight: 500;
             transition: color 0.3s;
+            display: block !important;
+            padding: 0.5rem 1rem;
+            margin: 0.2rem 0;
         }
 
         .nav-link:hover {
             color: white !important;
+        }
+
+        .nav-menu {
+            display: block;
+            background-color: var(--secondary-color);
+        }
+        .nav-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .nav-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+        @media (max-width: 991.98px) {
+            .nav-menu {
+                display: none;
+                width: 100%;
+                padding: 10px;
+                border-radius: 5px;
+                margin-top: 10px;
+            }
+            .nav-toggle {
+                display: block;
+            }
         }
 
         .card {
@@ -181,17 +216,17 @@
 </head>
 <body>
     <div class="container">
-        <nav class="navbar navbar-expand-lg navbar-dark bg-dark rounded">
+        <nav class="navbar rounded">
             <div class="container-fluid">
                 <a class="navbar-brand" href="/">
                     <i class="fas fa-industry me-2"></i>
                     Módulo de Producción
                 </a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                    <span class="navbar-toggler-icon"></span>
+                <button id="navToggle" class="nav-toggle">
+                    <i class="fas fa-bars"></i>
                 </button>
-                <div class="collapse navbar-collapse" id="navbarNav">
-                    <ul class="navbar-nav">
+                <div id="navMenu" class="nav-menu">
+                    <ul class="nav-list">
                         <li class="nav-item">
                             <a class="nav-link" href="{{ url('/registros') }}">
                                 <i class="fas fa-clipboard-list me-1"></i> Registros
@@ -206,7 +241,7 @@
                 </div>
             </div>
         </nav>
-
+ <!-- Implementación de mecanismo para mostrar alertas de éxito o error -->
         @if(session('success'))
             <div class="alert alert-success alert-dismissible fade show" role="alert">
                 {{ session('success') }}
@@ -244,6 +279,15 @@
     <!-- SweetAlert2 -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
+    <!-- Navbar Toggle Script -->
+    <script>
+        $(document).ready(function() {
+            $('#navToggle').click(function() {
+                $('#navMenu').slideToggle();
+            });
+        });
+    </script>
+
     <!-- AJAX Setup -->
     <script>
         $.ajaxSetup({
@@ -252,13 +296,16 @@
             }
         });
 
-        // Configuración global de toastr
+        // Configuración global de toastr para mensajes emergentes
         toastr.options = {
             closeButton: true,
             progressBar: true,
             positionClass: "toast-top-right",
             timeOut: 3000
         };
+
+        // Script para asegurar que el navbar funcione correctamente
+
     </script>
 
     @yield('scripts')

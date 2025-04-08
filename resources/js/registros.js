@@ -117,6 +117,7 @@ function loadTurnos() {
 // Función para cargar registros desde la API con filtro opcional
 function loadRegistros(turnoId = null) {
     // Construir URL con filtro si es necesario
+    console.log('loadRegistros() se está ejecutando');
     let url = '/api/registros';
     if (turnoId) {
         url += `?turno_id=${turnoId}`;
@@ -144,28 +145,11 @@ function loadRegistros(turnoId = null) {
                         'proyecto': registro.proyecto,
                         'turno': turnoNombre,
                         'created_at': formatDate(registro.created_at),
-                        'actions': `
-                            <div class="action-buttons">
-                                <button class="btn btn-sm btn-info edit-registro"
-                                    data-id="${registro.id}"
-                                    data-maquina="${registro.maquina}"
-                                    data-proyecto="${registro.proyecto}"
-                                    data-turno="${registro.turno_id}">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <button class="btn btn-sm btn-danger delete-registro" data-id="${registro.id}">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </div>
-                        `
+
                     }).draw(false);
                 });
 
-                // Agregar eventos para editar y eliminar
-                $('.delete-registro').click(function() {
-                    let id = $(this).data('id');
-                    confirmDelete(id);
-                });
+
             } else {
                 toastr.error('Error al cargar los registros');
             }
@@ -262,45 +246,7 @@ function saveRegistro() {
     });
 }
 
-// Función para confirmar eliminación
-function confirmDelete(id) {
-    Swal.fire({
-        title: '¿Está seguro?',
-        text: "Esta acción no se puede deshacer",
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Sí, eliminar',
-        cancelButtonText: 'Cancelar'
-    }).then((result) => {
-        if (result.isConfirmed) {
-            deleteRegistro(id);
-        }
-    });
-}
 
-// Función para eliminar un registro
-function deleteRegistro(id) {
-    $.ajax({
-        url: `/api/registros/${id}`,
-        type: 'DELETE',
-        dataType: 'json',
-        success: function(response) {
-            if (response.success) {
-                // Mostrar mensaje de éxito
-                toastr.success('Registro eliminado correctamente');
-
-                // Recargar lista de registros
-                loadRegistros($('#filter_turno').val());
-            }
-        },
-        error: function(xhr) {
-            toastr.error('Error al eliminar el registro');
-            console.log(xhr);
-        }
-    });
-}
 
 // Función para formatear fecha
 function formatDate(dateString) {
@@ -319,6 +265,4 @@ function formatDate(dateString) {
 // Exportar funciones para uso global
 window.loadRegistros = loadRegistros;
 window.saveRegistro = saveRegistro;
-window.deleteRegistro = deleteRegistro;
-window.confirmDelete = confirmDelete;
 window.formatDate = formatDate;
