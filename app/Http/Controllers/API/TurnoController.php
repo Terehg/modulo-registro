@@ -10,9 +10,7 @@ use Illuminate\Http\Response;
 
 class TurnoController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    // Funcion para mostrar los datos
     public function index()
     {
         $turnos = Turno::all();
@@ -20,12 +18,10 @@ class TurnoController extends Controller
             'success' => true,
             'data' => $turnos
         ]);
-       
+
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
+    // Funcion para guardar los datos
     public function store(Request $request)
     {
         $validated = $request->validate([
@@ -40,9 +36,8 @@ class TurnoController extends Controller
             'data' => $turnos
         ], Response::HTTP_CREATED);
     }
- /**
-     * Display the specified resource.
-     */
+
+    // Funcion para mostrar los datos por id
     public  function show($id)
     {
         $turnos = Turno::find($id);
@@ -59,9 +54,7 @@ class TurnoController extends Controller
         ]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
+    // Funcion para editar los datos
     public function update(Request $request, $id)
     {
         $turno = Turno::find($id);
@@ -86,9 +79,7 @@ class TurnoController extends Controller
         ]);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
+    // Funcion para eliminar los datos
     public function destroy($id)
     {
         $turno = Turno::find($id);
