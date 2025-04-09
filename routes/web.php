@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return redirect()->route('turnos.index');
+    return redirect('/registros');
 });
 
 Route::get('/turnos', [TurnosController::class, 'index'])->name('turnos.index');
